@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Monitor</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    h1 {
+        background-color: #56c2f8;
+        color: white;
+        padding: 20px;
+        border-bottom: 2px solid #333;
+    }
+
+    .info-box {
+        font-size: 24px;
+        color: #555;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: white;
+        border-radius: 10px;
+        margin: 20px auto;
+        width: 300px;
+    }
+    </style>
+</head>
+<body>
+    <h1>Weather Monitor</h1>
+    <div id="temperature" class="info-box">Initializing...</div>
+    <div id="weather" class="info-box">Initializing...</div>
+    <div id="current_time" class="info-box">Initializing...</div>
+    
+    <script>
+        const socket = io();
+
+        socket.emit('request_weather');
+
+        socket.on('update_weather', function(data) {
+            const temperatureDiv = document.getElementById('temperature');
+            const weatherDiv = document.getElementById('weather');
+            const timeDiv = document.getElementById('current_time');
+
+            temperatureDiv.textContent = 'Temperature: ' + data.temperature;
+            weatherDiv.textContent = 'Weather: ' + data.weather;
+            timeDiv.textContent = 'Date & Time: ' + data.current_time;
+        });
+    </script>
+</body>
+</html>
